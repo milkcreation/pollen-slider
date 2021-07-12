@@ -11,6 +11,6 @@
     "@glidejs/glide": "^3.4.1"
   },
   "dependencies": {
-    "@pollen-solutions/support": "file:../partial/"
+    "@pollen-solutions/partial": "file:../partial/"
   }
 }
