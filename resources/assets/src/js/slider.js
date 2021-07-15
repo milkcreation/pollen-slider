@@ -8,12 +8,12 @@ class Slider extends AbstractPlugin {
   constructor(el, options = {}) {
     super(el, options)
 
-    this.verbose = true
+    this.verbose = false
 
     /**
      * @param {Glide}
      */
-    this.engine = undefined
+    this.glide = undefined
 
     this._initOptions(options)
     this._initControls()
@@ -31,7 +31,7 @@ class Slider extends AbstractPlugin {
   _destroy() {
     super._destroy();
 
-    this.engine.destroy()
+    this.glide.destroy()
 
     if (this.verbose) console.log('Slider destroyed')
   }
@@ -40,7 +40,30 @@ class Slider extends AbstractPlugin {
   // -------------------------------------------------------------------------------------------------------------------
   // Controls initialization.
   _initControls() {
-    this.engine = new Glide(this.el, this.options).mount()
+    const self = this
+
+    this.glide = new Glide(this.el, this.options)
+
+    this.glide.on(['mount.after', 'run'], () => {
+      const currentPageNum = this.glide.index + 1,
+          totalPage = this.glide._c.Sizes.length,
+          $pageCurrents = self.el.querySelectorAll('.glide__page_current'),
+          $pageTotals = self.el.querySelectorAll('.glide__page_total')
+
+      if ($pageCurrents) {
+        $pageCurrents.forEach($pageCurrent => {
+          $pageCurrent.innerHTML = currentPageNum
+        })
+      }
+
+      if ($pageTotals) {
+        $pageTotals.forEach($pageTotal => {
+          $pageTotal.innerHTML = totalPage
+        })
+      }
+    })
+
+    this.glide.mount()
 
     if (this.verbose) console.log('Slider controls initialized')
   }
@@ -53,7 +76,7 @@ window.addEventListener('load', e => {
     new Slider($slider)
   })
 
-  MutationObserver('[data-observe="slider"]', function ($slider)  {
+  MutationObserver('[data-observe="slider"]', function ($slider) {
     new Slider($slider)
   })
 })

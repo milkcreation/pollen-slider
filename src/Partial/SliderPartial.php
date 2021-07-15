@@ -37,6 +37,21 @@ class SliderPartial extends PartialDriver
             parent::defaultParams(),
             [
                 /**
+                 * @var bool
+                 */
+                'arrows' => false,
+
+                /**
+                 * @var bool
+                 */
+                'bullets' => false,
+
+                /**
+                 * @var array|bool
+                 */
+                'controls' => false,
+
+                /**
                  * List of slides.
                  * @var string[]|callable[]
                  * @see https://picsum.photos/images
@@ -84,6 +99,28 @@ class SliderPartial extends PartialDriver
                 'attrs.data-options' => $this->get('options', []),
             ]
         );
+
+        if ($this->get('bullets')) {
+            $this->set('bullets', array_keys(array_values($slides ?: [])));
+        }
+
+        if ($controls = $this->get('controls')) {
+            $defaultControls = [
+                'first' => 'First',
+                'last'  => 'Last',
+                'page'  => true,
+                'next'  => 'Next',
+                'prev'  => 'Prev'
+            ];
+
+            $controls = !is_array($controls) ? $defaultControls : array_merge($defaultControls, $controls);
+
+            if ($controls['page']) {
+                $controls['total'] = count($slides);
+            }
+
+            $this->set('controls', $controls);
+        }
 
         if ($this->get('observe')) {
             $this->set('attrs.data-observe', 'slider');
