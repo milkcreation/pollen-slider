@@ -1,13 +1,13 @@
 {
   "name": "pollen-solutions/slider",
   "description": "Pollen Slider Component",
-  "homepage": "https://www.presstify.com/pollen-solutions/slider/",
+  "homepage": "https://github.com/milkcreation/pollen-slider.git",
   "keywords": [
     "pollen solutions",
     "component",
     "slider"
   ],
-  "time": "2021-07-15",
+  "time": "2021-09-15",
   "license": "MIT",
   "authors": [
     {
